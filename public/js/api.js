@@ -89,4 +89,5 @@ const API = {
   aiSuggestTasks(data) { return this.request('/ai/suggest-tasks', { method: 'POST', body: JSON.stringify(data) }); },
   aiImproveDescription(data) { return this.request('/ai/improve-description', { method: 'POST', body: JSON.stringify(data) }); },
   aiProjectSummary(data) { return this.request('/ai/project-summary', { method: 'POST', body: JSON.stringify(data) }); },
+  aiCreateFromPrompt(data) { return this.request('/ai/create-from-prompt', { method: 'POST', body: JSON.stringify(data) }); },
 };

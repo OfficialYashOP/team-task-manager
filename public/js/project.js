@@ -319,3 +319,35 @@ async function aiImproveDesc() {
   } catch (err) { showToast(err.message, 'error'); }
   finally { btn.textContent = orig; btn.disabled = false; }
 }
+
+async function aiCreateFromPrompt() {
+  const input = document.getElementById('aiPromptInput');
+  const btn = document.getElementById('aiPromptBtn');
+  const prompt = input.value.trim();
+  if (!prompt) { showToast('Type what you want AI to create', 'error'); return; }
+
+  btn.textContent = '⏳ Creating...';
+  btn.disabled = true;
+
+  try {
+    const result = await API.aiCreateFromPrompt({ prompt, projectId });
+    input.value = '';
+    showToast(`✅ AI created ${result.count} task${result.count > 1 ? 's' : ''}!`, 'success');
+    loadTasks(); // Refresh the kanban board
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.textContent = '⚡ Create';
+    btn.disabled = false;
+  }
+}
+
+// Enter key support for AI command bar
+document.addEventListener('DOMContentLoaded', () => {
+  const aiInput = document.getElementById('aiPromptInput');
+  if (aiInput) {
+    aiInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') aiCreateFromPrompt();
+    });
+  }
+});

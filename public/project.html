@@ -35,6 +35,12 @@
         </div>
       </div>
 
+      <!-- AI Command Bar -->
+      <div class="ai-command-bar ai-btn" id="aiCommandBar" style="display:none">
+        <input type="text" id="aiPromptInput" placeholder="🤖 Tell AI what to do... e.g. 'Create 3 tasks for login page and assign to Sam'">
+        <button onclick="aiCreateFromPrompt()" id="aiPromptBtn">⚡ Create</button>
+      </div>
+
       <!-- Task Board -->
       <div class="task-board" id="taskBoard"></div>
     </main>
