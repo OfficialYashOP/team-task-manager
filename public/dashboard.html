@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — TaskFlow</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <button class="mobile-toggle" id="mobileToggle">☰</button>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>⚡ TaskFlow</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Menu</div>
+        <button class="nav-item active" onclick="showSection('dashboard')">
+          <span class="icon">📊</span> Dashboard
+        </button>
+        <button class="nav-item" onclick="showSection('projects')">
+          <span class="icon">📁</span> Projects
+        </button>
+        <button class="nav-item" onclick="showSection('mytasks')">
+          <span class="icon">✅</span> My Tasks
+        </button>
+
+        <div class="nav-section-title">Projects</div>
+        <div id="projectNavList"></div>
+      </nav>
+      <div class="sidebar-user" id="sidebarUser"></div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <!-- Dashboard Section -->
+      <section id="dashboardSection">
+        <div class="page-header">
+          <div>
+            <h1 id="greeting">Dashboard</h1>
+            <p class="subtitle">Here's what's happening across your projects</p>
+          </div>
+          <button class="btn btn-primary" onclick="showCreateProjectModal()">+ New Project</button>
+        </div>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="content-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>📋 Overdue Tasks</h3>
+            </div>
+            <div class="card-body no-pad" id="overdueList"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>🕐 Recent Activity</h3>
+            </div>
+            <div class="card-body" id="activityList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projectsSection" style="display:none">
+        <div class="page-header">
+          <div>
+            <h1>Projects</h1>
+            <p class="subtitle">Manage your team projects</p>
+          </div>
+          <button class="btn btn-primary" onclick="showCreateProjectModal()">+ New Project</button>
+        </div>
+        <div class="projects-grid" id="projectsGrid"></div>
+      </section>
+
+      <!-- My Tasks Section -->
+      <section id="mytasksSection" style="display:none">
+        <div class="page-header">
+          <div>
+            <h1>My Tasks</h1>
+            <p class="subtitle">Tasks assigned to you</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body no-pad" id="myTasksList"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Create Project Modal -->
+  <div class="modal-overlay" id="createProjectModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Create New Project</h3>
+        <button class="modal-close" onclick="closeModal('createProjectModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="createProjectForm">
+          <div class="form-group">
+            <label>Project Name</label>
+            <input type="text" class="form-control" id="projectName" placeholder="e.g. Website Redesign" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" id="projectDesc" placeholder="Brief project description..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Color</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap" id="colorPicker">
+              <button type="button" class="color-dot" data-color="#6366f1" style="width:32px;height:32px;border-radius:50%;border:3px solid transparent;background:#6366f1;cursor:pointer"></button>
+              <button type="button" class="color-dot" data-color="#8b5cf6" style="width:32px;height:32px;border-radius:50%;border:3px solid transparent;background:#8b5cf6;cursor:pointer"></button>
+              <button type="button" class="color-dot" data-color="#ec4899" style="width:32px;height:32px;border-radius:50%;border:3px solid transparent;background:#ec4899;cursor:pointer"></button>
+              <button type="button" class="color-dot" data-color="#f43f5e" style="width:32px;height:32px;border-radius:50%;border:3px solid transparent;background:#f43f5e;cursor:pointer"></button>
+              <button type="button" class="color-dot" data-color="#f59e0b" style="width:32px;height:32px;border-radius:50%;border:3px solid transparent;background:#f59e0b;cursor:pointer"></button>
+              <button type="button" class="color-dot" data-color="#10b981" style="width:32px;height:32px;border-radius:50%;border:3px solid transparent;background:#10b981;cursor:pointer"></button>
+              <button type="button" class="color-dot" data-color="#06b6d4" style="width:32px;height:32px;border-radius:50%;border:3px solid transparent;background:#06b6d4;cursor:pointer"></button>
+              <button type="button" class="color-dot" data-color="#3b82f6" style="width:32px;height:32px;border-radius:50%;border:3px solid transparent;background:#3b82f6;cursor:pointer"></button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('createProjectModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createProject()">Create Project</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

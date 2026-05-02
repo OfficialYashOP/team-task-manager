@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project — TaskFlow</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <button class="mobile-toggle" id="mobileToggle">☰</button>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h2>⚡ TaskFlow</h2></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Navigation</div>
+        <a class="nav-item" href="/dashboard.html"><span class="icon">📊</span> Dashboard</a>
+        <div class="nav-section-title">Project Members</div>
+        <div id="memberNav"></div>
+      </nav>
+      <div class="sidebar-user" id="sidebarUser"></div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 id="projectTitle">Project</h1>
+          <p class="subtitle" id="projectDesc"></p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" onclick="showTaskModal()">+ Add Task</button>
+          <button class="btn btn-secondary btn-sm ai-btn" id="aiSuggestBtn" onclick="aiSuggestTasks()" style="display:none">🤖 AI Suggest Tasks</button>
+          <button class="btn btn-secondary btn-sm ai-btn" id="aiSummaryBtn" onclick="aiProjectSummary()" style="display:none">✨ AI Summary</button>
+          <button class="btn btn-secondary btn-sm" id="addMemberBtn" onclick="showMemberModal()" style="display:none">+ Add Member</button>
+          <button class="btn btn-danger btn-sm" id="deleteProjectBtn" onclick="deleteProject()" style="display:none">Delete Project</button>
+        </div>
+      </div>
+
+      <!-- Task Board -->
+      <div class="task-board" id="taskBoard"></div>
+    </main>
+  </div>
+
+  <!-- Task Modal -->
+  <div class="modal-overlay" id="taskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="taskModalTitle">New Task</h3>
+        <button class="modal-close" onclick="closeModal('taskModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editTaskId">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" class="form-control" id="taskTitle" placeholder="Task title" required>
+        </div>
+        <div class="form-group">
+          <label>Description <button type="button" class="btn-ghost ai-btn" id="aiDescBtn" onclick="aiImproveDesc()" style="display:none;font-size:11px;padding:2px 8px;margin-left:8px">🤖 AI Improve</button></label>
+          <textarea class="form-control" id="taskDesc" placeholder="Task description..."></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" id="taskStatus">
+              <option value="todo">To Do</option>
+              <option value="in_progress">In Progress</option>
+              <option value="review">Review</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select class="form-control" id="taskPriority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group">
+            <label>Assign To</label>
+            <select class="form-control" id="taskAssign"><option value="">Unassigned</option></select>
+          </div>
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" class="form-control" id="taskDueDate">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('taskModal')">Cancel</button>
+        <button class="btn btn-primary" id="taskSubmitBtn" onclick="submitTask()">Create Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Summary Modal -->
+  <div class="modal-overlay" id="aiSummaryModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>✨ AI Project Summary</h3>
+        <button class="modal-close" onclick="closeModal('aiSummaryModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="aiSummaryContent">
+        <div class="spinner"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('aiSummaryModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Suggestions Modal -->
+  <div class="modal-overlay" id="aiSuggestModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>🤖 AI Task Suggestions</h3>
+        <button class="modal-close" onclick="closeModal('aiSuggestModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="aiSuggestContent">
+        <div class="spinner"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('aiSuggestModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Member Modal -->
+  <div class="modal-overlay" id="memberModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add Team Member</h3>
+        <button class="modal-close" onclick="closeModal('memberModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" class="form-control" id="memberEmail" placeholder="teammate@example.com">
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select class="form-control" id="memberRole">
+            <option value="member">Member</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('memberModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="addMember()">Add Member</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/project.js"></script>
+</body>
+</html>
