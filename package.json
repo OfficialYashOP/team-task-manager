@@ -3,22 +3,19 @@
   "version": "1.0.0",
   "description": "A full-stack team task manager with role-based access control, project management, and task tracking.",
   "main": "server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
-  "keywords": [
-    "task-manager",
-    "project-management",
-    "team",
-    "rbac"
-  ],
+  "keywords": ["task-manager", "project-management", "team", "rbac"],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^12.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
@@ -28,5 +25,8 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "uuid": "^11.0.3"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^12.9.0"
   }
 }

@@ -31,12 +31,19 @@ if (process.env.DATABASE_URL) {
   };
 
 } else {
-  // =========== SQLITE ===========
-  const Database = require('better-sqlite3');
+  // =========== SQLITE (local dev only) ===========
+  let Database;
+  try {
+    Database = require('better-sqlite3');
+  } catch (e) {
+    console.error('better-sqlite3 not available. Set DATABASE_URL to use PostgreSQL.');
+    process.exit(1);
+  }
   const dbPath = path.join(__dirname, '..', 'taskflow.db');
   const sqlite = new Database(dbPath);
   sqlite.pragma('journal_mode = WAL');
   sqlite.pragma('foreign_keys = ON');
+
 
   // Convert $1, $2... to ?
   function convertPlaceholders(sql) {
